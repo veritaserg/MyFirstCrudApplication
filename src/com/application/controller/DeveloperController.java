@@ -2,36 +2,36 @@ package com.application.controller;
 
 import com.application.model.Developer;
 import com.application.repository.GenericRepository;
-import com.application.repository.JavaIODeveloperRepositoryImpl;
+import com.application.repository.io.JavaIODeveloperRepositoryImpl;
 
+import java.io.IOException;
 import java.util.List;
 
-public class DeveloperController implements Controller<Developer> {
+public class DeveloperController {
 
     private GenericRepository dev = new JavaIODeveloperRepositoryImpl();
 
-    @Override
     public void create(Developer d) {
-        dev.create(d);
+        try {
+            dev.create(d);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
-    @Override
-    public void remove(Integer id) {
+    public void remove(Long id) {
         dev.remove(id);
     }
 
-    @Override
     public void update(Developer d) {
         dev.update(d);
     }
 
-    @Override
-    public Developer get(Integer id) {
+    public Developer get(Long id) {
         return (Developer) dev.getDev(id);
     }
 
-    @Override
     public List<Developer> list() {
         return dev.list();
     }

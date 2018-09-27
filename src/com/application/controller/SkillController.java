@@ -1,37 +1,41 @@
 package com.application.controller;
 
 import com.application.model.Skill;
-import com.application.repository.GenericRepository;
-import com.application.repository.JavaIOSkillRepositoryImpl;
+import com.application.repository.SkillRepository;
+import com.application.repository.io.JavaIOSkillRepositoryImpl;
 
+import java.io.IOException;
 import java.util.List;
 
-public class SkillController implements Controller<Skill> {
+public class SkillController {
 
-    private GenericRepository sk = new JavaIOSkillRepositoryImpl();
+    private SkillRepository sk = new JavaIOSkillRepositoryImpl();
 
-    @Override
     public void create(Skill skill) {
-        sk.create(skill);
+        try {
+            sk.create(skill);
+        } catch (IOException e) {
+            System.out.println("!!!!");
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void remove(Integer id) {
+    public void remove(Long id) {
+        sk.remove(id);
 
     }
 
-    @Override
     public void update(Skill skill) {
 
     }
 
-    @Override
-    public Skill get(Integer id) {
-        return null;
+    public Skill get(Long id) {
+
+        return sk.getDev(id);
     }
 
-    @Override
+
     public List<Skill> list() {
-        return null;
+        return sk.list();
     }
 }

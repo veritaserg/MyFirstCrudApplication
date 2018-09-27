@@ -1,6 +1,5 @@
 package com.application.view;
 
-import com.application.controller.Controller;
 import com.application.controller.DeveloperController;
 
 import java.io.BufferedReader;
@@ -9,16 +8,18 @@ import java.io.InputStreamReader;
 
 public class ConsoleHelper {
     private static BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-    View view;
+
 
     public void startApp() {
-        view = new DeveloperView();
-        Controller controller = new DeveloperController();
-        view.setController(controller);
+
+        DeveloperController controller = new DeveloperController();
         showCommandsMenu();
     }
 
     private void showCommandsMenu() {
+        DeveloperView view = new DeveloperView();
+        AccountView vievAccount = new AccountView();
+        SkillView viewSkill = new SkillView();
         while (true) {
             try {
                 writeToConsole("\nSelect command:\n\n" +
@@ -27,7 +28,10 @@ public class ConsoleHelper {
                         "2 - Select by id\n" +
                         "3 - Update by id\n" +
                         "4 - Delete by id\n" +
-                        "5 - Exit\n");
+                        "5 - Select all Skill\n" +
+                        "6 - Select all Account\n" +
+                        "7 - Exit\n");
+
                 switch (Integer.parseInt(readString())) {
                     case 0:
                         view.viewCreate();
@@ -47,6 +51,14 @@ public class ConsoleHelper {
                         ConsoleHelper.writeToConsole("Command executed successfully.");
                         break;
                     case 5:
+                        viewSkill.viewGetAll();
+                        ConsoleHelper.writeToConsole("Command executed successfully.");
+                        break;
+                    case 6:
+                        vievAccount.viewGetAll();
+                        ConsoleHelper.writeToConsole("Command executed successfully.");
+                        break;
+                    case 7:
                         return;
 
                     default:

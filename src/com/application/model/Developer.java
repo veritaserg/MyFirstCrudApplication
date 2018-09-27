@@ -1,23 +1,20 @@
 package com.application.model;
 
-import java.io.Serializable;
 import java.util.Set;
 
-public class Developer implements Serializable {
+public class Developer extends BaseEntity {
     private String name;
-    private int id;
-
     private Set<Skill> skills;
     private Account account;
 
-    public Developer(int id, String name) {
-        this.id = id;
+
+    public Developer(Long id, String name, Set<Skill> skills, Account account) {
+        super(id);
         this.name = name;
-
+        this.skills = skills;
+        this.account = account;
     }
 
-    public Developer() {
-    }
 
     public String getName() {
         return name;
@@ -27,15 +24,8 @@ public class Developer implements Serializable {
         this.name = name;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public Set<Skill> getSkills() {
+
         return skills;
     }
 
@@ -57,7 +47,6 @@ public class Developer implements Serializable {
                 "name='" + name + '\'' +
                 ", skills=" + skills +
                 ", account=" + account +
-                ", id=" + id +
                 '}';
     }
 }

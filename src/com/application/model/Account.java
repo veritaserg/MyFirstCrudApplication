@@ -1,15 +1,11 @@
 package com.application.model;
 
-import java.io.Serializable;
-
-public class Account implements Serializable {
+public class Account extends BaseEntity {
     private String account;
-    private int id;
 
-    public Account(int id, String account) {
-
+    public Account(Long id, String account) {
+        super(id);
         this.account = account;
-        this.id = id;
     }
 
     public String getAccount() {
@@ -20,16 +16,8 @@ public class Account implements Serializable {
         this.account = account;
     }
 
-    public int getId() {
-        return id;
-    }
-
     @Override
     public String toString() {
         return account;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 }

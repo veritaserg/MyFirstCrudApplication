@@ -1,8 +1,6 @@
 package com.application.view;
 
-import com.application.controller.AccountControler;
-import com.application.controller.Controller;
-import com.application.controller.SkillController;
+import com.application.controller.DeveloperController;
 import com.application.model.Account;
 import com.application.model.Developer;
 import com.application.model.Skill;
@@ -13,25 +11,18 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class DeveloperView implements View {
-    private Controller<Developer> controller;
+public class DeveloperView {
+    private DeveloperController controller = new DeveloperController();
 
-    @Override
-    public void setController(Controller controller) {
-        this.controller = controller;
-    }
-
-    @Override
     public void viewCreate() {
-        controller.create(createDev());
+        controller.create(createDev(0));
     }
 
-    @Override
     public void viewGetById() {
         while (true) {
             ConsoleHelper.writeToConsole("Input ID:");
             try {
-                int id = Integer.parseInt(ConsoleHelper.readString());
+                Long id = Long.valueOf(Integer.parseInt(ConsoleHelper.readString()));
                 writeById(controller.get(id));
                 break;
             } catch (IOException e) {
@@ -44,34 +35,37 @@ public class DeveloperView implements View {
         if (dev == null || (dev.getId() == 0 && dev.getName() == null)) {
             ConsoleHelper.writeToConsole("\nThere is no such ID\n");
         } else {
-            ConsoleHelper.writeToConsole("\n" + dev.toString() + "\n");
+            ConsoleHelper.writeToConsole("\n" + "ID = " + dev.getId() + " || Name: " + dev.getName() + " || Skill:" +
+                    dev.getSkills() + " || Account:  " + dev.getAccount() + "\n");
         }
     }
 
-    @Override
+
     public void viewGetAll() {
         List<Developer> developers = controller.list();
         if (developers.isEmpty()) {
             ConsoleHelper.writeToConsole("\nThere are no records to view.\n");
         } else {
             for (Developer dev : developers) {
-                ConsoleHelper.writeToConsole(String.valueOf(dev));
+                ConsoleHelper.writeToConsole("\n" + "ID = " + dev.getId() + " || Name: " + dev.getName() + " || Skill:" +
+                        dev.getSkills() + " || Account:  " + dev.getAccount());
             }
         }
     }
 
-    @Override
+
     public void viewUpdate() {
         ConsoleHelper.writeToConsole("Creating Developer for update ...");
-        controller.update(createDev());
+
+
+        controller.update(createDev(1));
     }
 
-    @Override
     public void viewDelete() {
         while (true) {
             ConsoleHelper.writeToConsole("Input ID:");
             try {
-                int id = Integer.parseInt(ConsoleHelper.readString());
+                Long id = Long.valueOf(ConsoleHelper.readString());
                 controller.remove(id);
                 break;
             } catch (IOException e) {
@@ -80,22 +74,25 @@ public class DeveloperView implements View {
         }
     }
 
-    private Developer createDev() {
+    private Developer createDev(int i) {
         Developer developer;
-        int id;
+        Long id = 0l;
         String devName;
         Account account;
         Set<Skill> skills = new HashSet<>();
 
-        while (true) {
-            try {
-                ConsoleHelper.writeToConsole("Input ID");
-                id = Integer.parseInt(ConsoleHelper.readString());
-                break;
-            } catch (IOException e) {
-                ConsoleHelper.writeToConsole("Wrong integer. Try again");
+        if (i > 0) {
+            while (true) {
+                try {
+                    ConsoleHelper.writeToConsole("Input ID");
+                    id = Long.valueOf(ConsoleHelper.readString());
+                    break;
+                } catch (IOException e) {
+                    ConsoleHelper.writeToConsole("Failed input. Try again");
+                }
             }
         }
+
         while (true) {
             try {
                 ConsoleHelper.writeToConsole("Input Name Developer");
@@ -121,28 +118,30 @@ public class DeveloperView implements View {
                 ConsoleHelper.writeToConsole("Input skill's  of developer: (for finish input 'exit')");
                 String str;
                 ArrayList<String> idSet = new ArrayList<>();
+
                 while (!(str = ConsoleHelper.readString()).equalsIgnoreCase("exit")) {
-                    try {
-                        idSet.add(str);
-                    } catch (NumberFormatException e) {
-                        ConsoleHelper.writeToConsole("Wrong integer. Try again");
+                    {
+                        try {
+                            idSet.add(str);
+                        } catch (NumberFormatException e) {
+                            ConsoleHelper.writeToConsole("Wrong integer. Try again");
+                        }
                     }
                 }
-                SkillController controller = new SkillController();
-                Skill skill = (new Skill(idSet, id));
-                controller.create(skill);
-                skills.add(skill);
+                if (idSet.size() <= 0)
+                    idSet.add("NULL");
+                for (String list : idSet) {
 
-                AccountControler controler = new AccountControler();
-                controler.create(account);
-                developer = new Developer(id, devName);
-                developer.setSkills(skills);
-                developer.setAccount(account);
-                return developer;
+                    skills.add(new Skill(id, list));
+                }
+                break;
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+        return new Developer(id, devName, skills, account);
     }
+
 }
+

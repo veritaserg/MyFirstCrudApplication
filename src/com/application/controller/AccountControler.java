@@ -1,36 +1,38 @@
 package com.application.controller;
 
 import com.application.model.Account;
-import com.application.repository.GenericRepository;
-import com.application.repository.JavaIOAccountRepositoryImpl;
+import com.application.repository.AccountRepository;
+import com.application.repository.io.JavaIOAccountRepositoryImpl;
 
+import java.io.IOException;
 import java.util.List;
 
-public class AccountControler implements Controller<Account> {
-    GenericRepository ac = new JavaIOAccountRepositoryImpl();
+public class AccountControler {
+    AccountRepository ac = new JavaIOAccountRepositoryImpl();
 
-    @Override
+
     public void create(Account account) {
-        ac.create(account);
+        try {
+            ac.create(account);
+        } catch (IOException e) {
+
+        }
     }
 
-    @Override
-    public void remove(Integer id) {
-
+    public void remove(Long id) {
+        ac.remove(id);
     }
 
-    @Override
     public void update(Account account) {
 
     }
 
-    @Override
-    public Account get(Integer id) {
-        return null;
+    public Account get(Long id) {
+        return ac.getDev(id);
     }
 
-    @Override
+
     public List<Account> list() {
-        return null;
+        return ac.list();
     }
 }
