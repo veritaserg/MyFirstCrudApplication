@@ -17,7 +17,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
-    static Path paths = Paths.get("com/application/resources/developer.txt");
+    static Path paths = Paths.get("C:\\Users\\T\\IdeaProjects\\com\\my\\crud\\src\\com\\application\\resources\\developer.txt");
     private Long id = 0L;
     SkillController sk = new SkillController();
     AccountControler account = new AccountControler();
@@ -72,11 +72,36 @@ public class JavaIODeveloperRepositoryImpl implements DeveloperRepository {
 
     @Override
     public Developer getDev(Long id) {
-        for (Developer list : list()) {
-            if (id == list.getId())
-                return list;
+        String line;
+        Set<Skill> skills = new HashSet<>();
+        ArrayList<String> listskills = new ArrayList<String>();
+        try (BufferedReader bf = Files.newBufferedReader(paths)) {
+            while (bf.ready()) {
+                line = bf.readLine();
+                for (String listt : listskills) {                         /////////works faster////////
+                    skills.add(new Skill(id, listt));
+                }
+                if (Long.parseLong(line.split(" ")[0]) == id)
+                    listskills.add(line.split(" ")[2]);
+                for (String listt : listskills) {
+                    skills.add(new Skill(id, listt));
+                }
+                    return new Developer(
+                            Long.valueOf(line.split(" ")[0]),
+                            line.split(" ")[1],
+                            skills,
+                            new Account(id, line.split(" ")[3]));
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return null;
+
+//        for (Developer list : list()) {
+//            if (id == list.getId())                      //shorter code working
+//                return list;
+//        }
+   return null;
     }
 
     @Override

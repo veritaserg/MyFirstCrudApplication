@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JavaIOAccountRepositoryImpl implements AccountRepository {
-    Path path = Paths.get("com/application/resources/account.txt");
+    Path path = Paths.get("C:\\Users\\T\\IdeaProjects\\com\\my\\crud\\src\\com\\application\\repository\\io\\JavaIOAccountRepositoryImpl.java");
 
     @Override
     public void create(Account account) {

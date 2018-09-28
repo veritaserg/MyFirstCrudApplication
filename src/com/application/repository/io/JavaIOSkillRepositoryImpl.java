@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JavaIOSkillRepositoryImpl implements SkillRepository {
-    Path path = Paths.get("com/application/resources/skills.txt");
+    Path path = Paths.get("C:\\Users\\T\\IdeaProjects\\com\\my\\crud\\src\\com\\application\\resources\\skills.txt");
 
     @Override
     public void create(Skill skill) throws IOException {
